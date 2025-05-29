@@ -37,5 +37,13 @@ pipeline {
          sh 'docker build -t $IMAGE_NAME .'
       }
     }
+    stage('Push Docker Image') {
+    steps {
+      sh '''
+        docker push $IMAGE_NAME
+        docker logout
+        '''
+      }
+    }
   }
 }
