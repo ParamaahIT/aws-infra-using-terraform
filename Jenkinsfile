@@ -2,6 +2,7 @@ pipeline {
   agent any
 
   environment {
+    IMAGE_NAME = 'prashanth2paramaah/hello-world-app:latest'
     VAULT_CRED_ID = 'vault-approle-creds'
     VAULT_ADDR    = 'http://44.212.14.235:8200'
   }
@@ -30,6 +31,11 @@ pipeline {
             '''
           }
         }
+      }
+    }
+    stage('Build Docker Image') {
+      steps {
+         sh 'docker build -t $IMAGE_NAME .'
       }
     }
   }
