@@ -4,7 +4,7 @@ pipeline {
   environment {
     IMAGE_NAME = 'prashanth2paramaah/hello-world-app:latest'
     VAULT_CRED_ID = 'vault-approle-creds'
-    VAULT_ADDR    = 'http://44.212.14.235:8200'
+    VAULT_ADDR    = 'http://44.203.157.156:8200'
   }
 
   stages {
