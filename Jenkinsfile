@@ -10,29 +10,27 @@ pipeline {
   stages {
     stage('Docker Login') {
       steps {
-        script {
-          withVault(
-            vaultUrl: "${env.VAULT_ADDR}",
-            vaultCredentialId: "${env.VAULT_CRED_ID}",
-            vaultSecrets: [
-              [
-                path: 'docker-credentials',    
-                engineVersion: 2,
-                secretValues: [
-                  [envVar: 'DOCKER_USERNAME', vaultKey: 'username'],
-                  [envVar: 'DOCKER_PASSWORD', vaultKey: 'password']
-                ]
+        vault(
+          vaultSecrets: [
+            [
+              path: 'docker-credentials',
+              engineVersion: 2,
+              secretValues: [
+                [envVar: 'DOCKER_USERNAME', vaultKey: 'username'],
+                [envVar: 'DOCKER_PASSWORD', vaultKey: 'password']
               ]
             ]
-          ) {
-            sh '''
-              echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin
-
-            '''
-          }
-        }
+          ],
+          vaultUrl: "${env.VAULT_ADDR}",
+          vaultCredentialId: "${env.VAULT_CRED_ID}"
+        )
+        sh '''
+          echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin
+        '''
       }
     }
+  }
+}
     stage('Build Docker Image') {
       steps {
          sh 'docker build -t $IMAGE_NAME .'
