@@ -16,7 +16,7 @@ pipeline {
             vaultCredentialId: "${env.VAULT_CRED_ID}",
             vaultSecrets: [
               [
-                path: 'docker-credentials',    
+                path: 'secret/docker-credentials',    
                 engineVersion: 2,
                 secretValues: [
                   [envVar: 'DOCKER_USERNAME', vaultKey: 'username'],
